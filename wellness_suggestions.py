@@ -58,8 +58,8 @@ wellness_suggestions = [
 
 # --- UI ---
 st.set_page_config(page_title="Wellness Oracle", page_icon="✨", layout="centered")
-st.title("✨ Wellness Oracle")
-st.caption("gentle guidance, one day at a time")
+st.title("✨ Useless Wellness Oracle")
+st.caption("useless guidance, one day at a time")
 
 colA, colB = st.columns(2)
 with colA:
