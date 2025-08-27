@@ -1,9 +1,9 @@
+# wellness_suggestions.py  (or rename to app.py)
 import streamlit as st
-import datetime
 import random
+import datetime
 
-#What you need today (You can add as many as you want :))
-
+# --- data ---
 wellness_suggestions = [
     "Rest earlier than you think you need; tomorrow will thank you.",
     "Spend less time proving, more time simply being.",
@@ -56,15 +56,33 @@ wellness_suggestions = [
     "End today gently; tomorrow will carry its own weight."
 ]
 
-user_name = input("Enter your name: ")
-user_star_sign = input("Enter your star sign: ")
+# --- UI ---
+st.set_page_config(page_title="Wellness Oracle", page_icon="✨", layout="centered")
+st.title("✨ Wellness Oracle")
+st.caption("gentle guidance, one day at a time")
 
-print(f"Hello, {user_name}! Pick a day and month (1-31) and I'll tell you what you need that day: ")
+colA, colB = st.columns(2)
+with colA:
+    user_name = st.text_input("Your name", "")
+with colB:
+    user_star_sign = st.text_input("Your star sign", "")
 
-day = int(input("Day: "))
-month = (input("Month: "))
+col1, col2 = st.columns(2)
+today = datetime.date.today()
+with col1:
+    day = st.number_input("Day", min_value=1, max_value=31, value=today.day, step=1)
+with col2:
+    month = st.selectbox(
+        "Month",
+        ["January","February","March","April","May","June",
+         "July","August","September","October","November","December"],
+        index=today.month - 1
+    )
 
-wellness_suggestions = wellness_suggestions[day % len(wellness_suggestions)]
+if st.button("Reveal suggestion"):
+    # deterministic by date (so same day → same suggestion), but you can swap to random.choice
+    index = int(day) % len(wellness_suggestions)
+    suggestion = wellness_suggestions[index]
 
-print(f"\n{user_name}, as a {user_star_sign}, on {day} of {month}:")
-print(f"✨ {wellness_suggestions}")
+    st.success(f"{user_name or 'Friend'}, as a {user_star_sign or 'stargazer'}, on {int(day)} of {month}:")
+    st.write(f"**{suggestion}**")
